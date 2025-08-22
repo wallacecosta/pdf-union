@@ -1,0 +1,9 @@
+vendor/
+.git
+.gitignore
+node_modules/
+vendor/*
+arquivos/
+resultado/
+README.md
+docker-compose.override.yml

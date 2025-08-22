@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    ports:
+      - "7007:80"
+    volumes:
+      - ./:/var/www/html:delegated
+      - ./arquivos:/var/www/html/arquivos
+      - ./resultado:/var/www/html/resultado
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+      - DEBUG=0
+    restart: unless-stopped
+    command:
+      - bash
+      - -lc
+      - "chown -R www-data:www-data /var/www/html/arquivos /var/www/html/resultado || true && chmod -R 775 /var/www/html/arquivos /var/www/html/resultado || true && apache2-foreground"
