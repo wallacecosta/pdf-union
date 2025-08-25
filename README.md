@@ -35,7 +35,7 @@ docker-compose up -d --build
 
 2) Acessar a aplicação:
 
-Abra http://localhost:8000/index.php no navegador.
+Abra http://localhost:7007/index.php no navegador.
 
 3) Comandos úteis dentro do container
 
