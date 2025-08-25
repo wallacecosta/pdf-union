@@ -23,6 +23,52 @@ Observações:
 - A interface é propositalmente minimalista; você pode aprimorá-la com bibliotecas de arrastar/soltar ou melhorias visuais.
 - O `process.php` utiliza `PHP_BINARY` para executar o mesmo binário PHP em modo CLI; verifique se o ambiente permite a função `exec()` e se o PHP possui permissões de leitura/escrita necessárias.
 
+## Executar com Docker / Docker Compose
+
+Está incluído um `Dockerfile` e um `docker-compose.yml` de exemplo para facilitar a execução em container. A imagem usa Apache + PHP e instala extensões comuns (gd, zip, mbstring). Os diretórios `arquivos/` e `resultado/` são montados como volumes para persistência.
+
+1) Construir e subir com Docker Compose:
+
+```bash
+docker-compose up -d --build
+```
+
+2) Acessar a aplicação:
+
+Abra http://localhost:8000/index.php no navegador.
+
+3) Comandos úteis dentro do container
+
+Se precisar instalar dependências via Composer dentro do container (quando `vendor/` não foi copiado):
+
+```bash
+docker-compose run --rm web composer install --no-dev --optimize-autoloader
+# ou, após o container já estar em execução:
+docker-compose exec web composer install --no-dev --optimize-autoloader
+```
+
+4) Notas sobre permissões
+
+- Os volumes mapeados mantêm os arquivos no host. Se houver problemas de permissão, ajuste o proprietário/permissões no host:
+
+```bash
+sudo chown -R $(id -u):$(id -g) arquivos resultado
+```
+
+- Em ambientes CI/CD ou servidores, prefira ajustar usuário/UID conforme a política do host.
+
+5) Parar e remover containers
+
+```bash
+docker-compose down
+```
+
+Checklist Docker (implementado)
+
+- `Dockerfile` criado (imagem baseada em `php:8.1-apache` com extensões necessárias).
+- `docker-compose.yml` criado (mapeia portas e volumes, variável para composer).
+- `.dockerignore` criado para reduzir o contexto de build.
+
 ## Ambiente de desenvolvimento (WSL)
 
 Passos rápidos para rodar e testar o projeto no WSL (Ubuntu recomendado):
@@ -205,53 +251,6 @@ php -S 0.0.0.0:8000 -t .
 ```
 
 Abra no navegador: http://localhost:8000/index.php
-
-Executar com Docker / Docker Compose
-
-Está incluído um `Dockerfile` e um `docker-compose.yml` de exemplo para facilitar a execução em container. A imagem usa Apache + PHP e instala extensões comuns (gd, zip, mbstring). Os diretórios `arquivos/` e `resultado/` são montados como volumes para persistência.
-
-1) Construir e subir com Docker Compose:
-
-```bash
-docker-compose up -d --build
-```
-
-2) Acessar a aplicação:
-
-Abra http://localhost:8000/index.php no navegador.
-
-3) Comandos úteis dentro do container
-
-Se precisar instalar dependências via Composer dentro do container (quando `vendor/` não foi copiado):
-
-```bash
-docker-compose run --rm web composer install --no-dev --optimize-autoloader
-# ou, após o container já estar em execução:
-docker-compose exec web composer install --no-dev --optimize-autoloader
-```
-
-4) Notas sobre permissões
-
-- Os volumes mapeados mantêm os arquivos no host. Se houver problemas de permissão, ajuste o proprietário/permissões no host:
-
-```bash
-sudo chown -R $(id -u):$(id -g) arquivos resultado
-```
-
-- Em ambientes CI/CD ou servidores, prefira ajustar usuário/UID conforme a política do host.
-
-5) Parar e remover containers
-
-```bash
-docker-compose down
-```
-
-Checklist Docker (implementado)
-
-- `Dockerfile` criado (imagem baseada em `php:8.1-apache` com extensões necessárias).
-- `docker-compose.yml` criado (mapeia portas e volumes, variável para composer).
-- `.dockerignore` criado para reduzir o contexto de build.
-
 
 Fluxo de uso (passo a passo)
 
