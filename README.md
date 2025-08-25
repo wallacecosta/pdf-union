@@ -2,6 +2,10 @@
 
 Este projeto adiciona uma interface web mínima em PHP ao script existente `pdf-union.php`.
 
+<img width="1271" height="651" alt="Screenshot 2025-08-25 at 11 59 08" src="https://github.com/user-attachments/assets/ae561573-8115-4c29-b47e-ae762744658d" />
+<img width="1271" height="651" alt="Screenshot 2025-08-25 at 11 58 43" src="https://github.com/user-attachments/assets/093c3906-dd6f-4173-bf76-259f457c841c" />
+
+
 Arquivos adicionados:
 - `index.php` — interface de upload com ordenação no cliente (arrastar/soltar).
 - `process.php` — recebe os uploads na ordem definida pelo usuário, salva em `arquivos/` com prefixos numéricos (`1-nome.ext`, `2-nome.ext`, ...), executa o processo de união e apresenta o link de download.
